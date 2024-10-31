@@ -2,6 +2,8 @@ Precedent refers to a legal principle or rule established in a previous case tha
 
 In this project, I draw on powers of machine learning and natural language processing (NLP) in order to process large quantities of legal documents (both judgment texts and EU laws) and thereby look into the factors behind precedential value. A variety of machine learning frameworks (Linear Regression, Support Vector Machine, Random Forest, XGBoost) are applied to the problem. By way of concluding, potentials and limitations of the machine learning framework are discussed. 
 
+Keywords: **Machine Learning**, **scikit-learn**, **support vector machine**, **random forest**, **XGBoost**, **NLP**
+
 Reference: 
 
 Lupu, Yonatan, and Erik Voeten. "Precedent in international courts: a network analysis of case citations by the European Court of Human Rights." British Journal of Political Science 42.2 (2012): 413-439.
