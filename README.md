@@ -176,6 +176,16 @@ Keywords: **Machine Learning**, **scikit-learn**, **support vector machine**, **
 </table>
 </div>
 
+## Analysis
+
+|Algorithm           | RMSE  | Error Reduction RMSE  | MAE     | Error Reduction MAE |
+|--------------------|-------|-----------------------|---------|---------------------|
+| E[y]               | 3.12  | (benchmark)           | 1.96    | (benchmark)         |
+| SVM                | 2.22  | 28.9%                 | 1.24    | 36.8%  |
+| Linear Regression  | 2.16  | 30.8%                 | 1.23    | 37.1%  |
+| Random Forest      | 2.13  | 31.8%                 | 1.22    | 37.4%  |
+| XGBoost            | 2.09  | 32.9%                 | 1.21    | 37.9%  |
+
 
 ## Reference
 
