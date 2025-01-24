@@ -2,11 +2,14 @@
 
 Precedent refers to a legal principle or rule established in a previous case that is either binding or persuasive for judges deciding similar issues in future cases. While international courts do not adhere to precedent strictly speaking, they do cite previous judgments in an effort to build consistent case-law over time (Lupu and Voeten 2012). Precedential value can be seen as the influence or authority of a judgment for future case law building. 
 
-In this project, I draw on powers of machine learning and natural language processing (NLP) in order to process large quantities of legal documents (both judgment texts and EU laws) and thereby look into the factors behind precedential value. A variety of machine learning frameworks (Linear Regression, Support Vector Machine, Random Forest, XGBoost) are applied to the problem. By way of concluding, potentials and limitations of the machine learning framework are discussed. 
+In this project, I draw on the powers of machine learning and natural language processing (NLP) in order to process large quantities of legal documents (both judgment texts and EU laws) and thereby look into the factors behind precedential value. A variety of machine learning frameworks (Linear Regression, Support Vector Machine, Random Forest, XGBoost) are applied to the problem. By way of concluding, potentials and limitations of the machine learning framework are discussed. 
 
 Keywords: **Machine Learning**, **scikit-learn**, **support vector machine**, **random forest**, **XGBoost**, **NLP**
 
-## Descriptives 
+## Descriptives
+
+The problem definition is to predict the number of citations for a given judgment over the next 3 years as a function of a feature matrix. That matrix collects (1) features that relate to legal substance at stake, (2) features that relate to how the judgment is crafted, (3) features of the court, and (4) features of the (political) context. 
+
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -176,6 +179,10 @@ Keywords: **Machine Learning**, **scikit-learn**, **support vector machine**, **
 </table>
 </div>
 
+The following plot visualizes the bivariate correlations among these features.
+
+![Corrplot](figures/corrplot.jpg)
+
 ## Analysis
 
 |Algorithm           | RMSE  | Error Reduction RMSE  | MAE     | Error Reduction MAE |
@@ -185,6 +192,11 @@ Keywords: **Machine Learning**, **scikit-learn**, **support vector machine**, **
 | Linear Regression  | 2.16  | 30.8%                 | 1.23    | 37.1%  |
 | Random Forest      | 2.13  | 31.8%                 | 1.22    | 37.4%  |
 | XGBoost            | 2.09  | 32.9%                 | 1.21    | 37.9%  |
+
+
+Feature importance is visualized in the following plot:
+
+![Importance](figures/feature_importance.jpg)
 
 
 ## Reference
