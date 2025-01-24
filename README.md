@@ -10,6 +10,16 @@ Keywords: **Machine Learning**, **scikit-learn**, **support vector machine**, **
 
 The problem definition is to predict the number of citations for a given judgment over the next 3 years as a function of a feature matrix. That matrix collects (1) features that relate to legal substance at stake, (2) features that relate to how the judgment is crafted, (3) features of the court, and (4) features of the (political) context. 
 
+The first cluster of features relates to the legal substance at stake in a given judgment. First, dummies that indicate whether the judgments affects an EU regulation (affectsR), directive (affectsL), decision (affectsD), earlier court judgment (affectsCJ) or treaty article (affectsT), respectively. Second, a count variable measures how often a given legal act has been touched upon before the judgment in question (prior_touches_min_vec). The reasoning is that when the court gets to interpret a legal act such as a treaty article or a directive for the first time, the judgment could be more controversial than if it is the tenth court case to touch upon an article. In case a judgment affects multiple legal acts, I take the minimum count in order to capture the least-interpreted, presumably most controversial legal act affected. Finally, I include a measure of novelty for legal acts developed in my dissertation. Based on structural topic models Roberts, Stewart and Nielsen (2020), I seek to quantify the extent to which legal acts break new substantive ground, which could lead to more controversial disputes before court, and higher precedential value.
+
+The second cluster of features relates to the way the judgment is crafted. First, the year when the case was lodged at the CJEU is recorded (year_lodgment). Second, the number of days that passed between the day the case was lodged and the day the final judgment is made (days_it_took). Third, the length of the judgment text and fourth, the number of distinct pieces cited in the judgment (num_citations_vec), both being a rough approximation to the care that went into crafting the judgment. Fifth, there are two measures of substantive similarity between the judgment in question and earlier cases. This measure is created drawing on the judgment texts, which are preprocessed using standard steps, including stemming, the removal of digits and stopwords, as well as several terms frequent to CJEU judgments, such as the institutions involved. The pruned judgment texts are then converted into a TF-IDF matrix. Finally, substantive similarity is captured using cosine similarity on the TF-IDF matrix. As an alternative measure, I apply the same procedure using the subject matter classification scheme available in EUR-Lex, the official EU database on legislative data.
+
+The third cluster of features relates to characteristics of the court. Here I measure the chamber size which proxies the degree of controversy around a dispute (Larsson & Naurin 2016). Furthermore, I explicitly control for whether a judgment is delivered by the grand chamber, as opposed to smaller chambers which consist of a subset of three or five judges and handle more routine cases. 
+
+The fourth and final clusters relates to the wider political context. This includes, first, the country of origin for the case in question. Countries are weighted by their population size (country_of_origin_weights). Court judgments may raise attention particularly in countries where the dispute originates, and larger member states may wield greater political influence over the court. A second measure taps into the salience of the case among member state member state governments by measuring how many of them weigh in on the case by filing amicus curiae briefs num_obs_vec. Another version of this variable weights governmental briefs with population size as a proxy for political pressure (Larsson & Naurin 2016). 
+
+Finally, a lagged version of the outcome variable, the cite count of substantively similar judgments weighted by the overall number of judgments in the past is included (lagged_hit_ratio). This autoregressive component takes into account that over the time observed, there are temporal trends to affect the production of precedent. 
+
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -184,6 +194,10 @@ The following plot visualizes the bivariate correlations among these features.
 ![Corrplot](figures/corrplot.jpg)
 
 ## Analysis
+
+The objective of this project is to predict the number of times a given judgment will be cited in the future, which is a regression problem. I use three different machine learning algorithms suited to this type of problem, a Random Forest regressor, extreme gradient boosting (XGBoost), and a Support Vectors Machine (SVM). For each one, hyperparameters are set through grid search. As a benchmark algorithm, I add Ordinary Least Squares regression. Prior to estimation, the data are divided into train and test sets using 80 and 20 percent of the observations, respectively. Data are normalized using a standard scaler.  
+
+The following table shows the performance of each model. Overall, XGBoost performs best, leading to improvements of 32.9% on the RMSE and 37.9% on the MAE, respectively. 
 
 |Algorithm           | RMSE  | Error Reduction RMSE  | MAE     | Error Reduction MAE |
 |--------------------|-------|-----------------------|---------|---------------------|
